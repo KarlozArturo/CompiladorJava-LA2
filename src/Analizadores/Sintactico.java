@@ -1,15 +1,20 @@
 package Analizadores;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Sintactico {
 
     private final ArrayList<String> tiposTokens;
+    private final ArrayList<Token> tokens;
     private int contador = 0;
     private boolean bandera;
 
-    public Sintactico(ArrayList<String> tt) {
+    public Sintactico(ArrayList<String> tt,ArrayList<Token> ts) {
         tiposTokens = tt;
+        tokens =ts;
         analizar();
     }
 
@@ -19,14 +24,14 @@ public class Sintactico {
             System.out.println("El código ha compilado con éxito.");
         }
         else {
-            System.out.println("ERROR: Al crear la clase. Hay un error Sintáctico.");
+            System.out.println("Compilacion con errores sintacticos.");
         }
     }
 
-    public boolean AnalizarClase(boolean bandera) {
+        public boolean AnalizarClase(boolean bandera) {
         if (tiposTokens.get(contador).equals("modifier"))
             contador++;
-        if (tiposTokens.get(contador).equals("class")) {
+        if (tiposTokens.get(contador).equals("type")) {
             contador++;
             if (tiposTokens.get(contador).equals("identifier")) {
                 contador++;
@@ -230,4 +235,26 @@ public class Sintactico {
         }
         return bandera;
     }
+    
+    /* public int getErrorLine(String tipo) {
+       el caso para el modificadores seria la linea donde este la primera palabra, y en los otros casos:
+        para la clase,donde este el modificador, en la linea donde este el modificador
+        para el indentificador, la linea donde este la clase
+        y para el corchete, la linea donde este el identificador: 
+        
+        int count = 0;
+        int linea = 0;
+        switch(tipo){
+                case ";":
+                {
+                    while(tokens.get(count).getTipo()!=";"){
+                    linea = tokens.get(count).getLinea();
+
+            count++;
+                }
+        }
+               
+        }
+        return linea;
+    }*/
 }

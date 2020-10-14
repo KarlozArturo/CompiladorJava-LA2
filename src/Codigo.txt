@@ -1,11 +1,4 @@
-public class class Prueba{
-    private int variable=15;
-    private boolean bandera;
-
-    if(variable==15){
-        bandera=true;
-    }else{
-        bandera=false;
-        variable=15;
-    }
+private class test { 
+public int text = 2;
+public int mac = 6;
 }
