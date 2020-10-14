@@ -1,0 +1,4 @@
+private class test { 
+public int text = 2;
+public int mac = 6;
+}
