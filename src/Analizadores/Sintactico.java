@@ -24,7 +24,7 @@ public class Sintactico {
             System.out.println("El código ha compilado con éxito.");
         }
         else {
-            System.out.println("Compilacion con errores sintacticos.");
+            System.out.println("Compilacion terminada.");
         }
     }
 
