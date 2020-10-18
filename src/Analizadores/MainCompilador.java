@@ -49,8 +49,10 @@ public class MainCompilador {
         for (int i = 0; i < tokens.size(); i++) {
             if(tokens.get(i).getTipo().equals("identifier")){
                 //primero vamos a ver si ya existe previamente la variable en la tabla
-                int nTablaSimbolos = existsInTabla(tokens.get(i).getToken());
                 
+                int nTablaSimbolos = encontrarVariable(tokens.get(i).getToken());
+                
+                //y si esa variable no se encuentra repetida con un type de dato
                 if(nTablaSimbolos==0){ 
                 if(tokens.get(i-1).getTipo().equals("type")){
                     if(tokens.get(i+2).getTipo().equals("boolean literal")||tokens.get(i+2).getTipo().equals("integer literal")||tokens.get(i+1).getTipo().equals(";")){
@@ -71,17 +73,22 @@ public class MainCompilador {
                     //System.out.println("");
                }else{
                   //si la variable ya existe en la tablaDeSimbolos
+                  if(tokens.get(i-1).getTipo().equals("type")){
+                      System.out.println("La variable "+tokens.get(i).getToken()+" enla linea "+tokens.get(i).getLinea()+" se encunentra repetida");
+                  }else{
                    compatible = verficiarDeclaracion(tokens.get(i).getToken(), tokens.get(i-1).getToken(), tokens.get(i+2).getToken(), tokens.get(i-1).getLinea());
                     //System.out.println(compatible);
                   if(compatible){
                       newValue(i, nTablaSimbolos);
                   }
+                  }
  
                 }
             }
+            }
         }
-        
-    }
+    
+    
     
     public static void getTablaSimbolos(){
         System.out.println("");
@@ -91,7 +98,7 @@ public class MainCompilador {
         }
     }
     
-    public static int existsInTabla(String nombre){
+    public static int encontrarVariable(String nombre){
         int exists=0;
         for (int i = 0; i < tablaSimbolos.size(); i++){
             if(tablaSimbolos.get(i).getNombre().equals(nombre)){
@@ -103,6 +110,23 @@ public class MainCompilador {
         }
         
         return exists;
+    }
+    public static boolean variableRepetida(String nombre, int posicion){
+        boolean exists=false;
+        System.out.println(nombre);
+        for (int i = 0; i < tablaSimbolos.size(); i++){
+            if(tablaSimbolos.get(i).getNombre().equals(nombre)){
+                System.out.println(tablaSimbolos.get(i).getNombre());
+                if("Type".equals(tokens.get(i-1).getTipo())){
+                    System.out.println(tokens.get(i-1).getTipo());
+                exists = true;
+                    System.out.println("Variable "+ nombre+ " en la linea " +posicion+" no se encuentra inicializada");
+                    System.exit(0);
+                }
+            }
+           
+        }
+      return exists;
     }
     
     public static void newValue(int i, int iSimmbol){
@@ -160,8 +184,8 @@ public class MainCompilador {
     
     public static boolean tiposCompatibles(String variable1,String variable2){
         boolean compatibles=false;
-        int pos1 = existsInTabla(variable1);
-        int pos2 = existsInTabla(variable2);
+        int pos1 = encontrarVariable(variable1);
+        int pos2 = encontrarVariable(variable2);
         String tipo1 = tablaSimbolos.get(pos1).getTipo();
         String tipo2 = tablaSimbolos.get(pos2).getTipo();
         

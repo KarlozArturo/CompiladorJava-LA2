@@ -1,8 +1,9 @@
 public class Prueba{
-private int variable=8;
-private int variable2 = 11;
+private int variable;
+private int variable3 = 15 + 1;
     private boolean verdadero = true;
+private int verdadero = 0;
 	public int x;
-    x = variable2 + variable;
+    x = variable3 + variable;
 
 }
