@@ -1,4 +1,6 @@
-private class test { 
-public int text = 2;
-public int mac = 6;
+public class Prueba{
+    private int variable=15;
+    private boolean bandera;
+	public int x;
+    x = 2 + 15;
 }

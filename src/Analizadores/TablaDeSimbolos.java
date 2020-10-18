@@ -57,7 +57,8 @@ public class TablaDeSimbolos {
         System.out.println("NOMBRE"+" \t"+"TIPO "+" \t"+"LINEA"+" \t"+"VALOR");
         for (int i = 0; i < tabla.size(); i++) {
             System.out.println(tabla.get(i).nombre+" \t"+tabla.get(i).getTipo()
-                    +" \t "+tabla.get(i).getValor()+" \t "+tabla.get(i).getPosicion());
+                    +" \t "+tabla.get(i).getPosicion()+" \t "+tabla.get(i).getValor());
         }
     }
+    
 }

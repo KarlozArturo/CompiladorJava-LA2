@@ -65,71 +65,48 @@ public class Lexico {
     //Retorna el tipo de token en base a la palabra
     public String tipoDeToken(String palabra) {
         if (palabra.equals("(")){
-            System.out.print(tiposDeTokens[10]);
-            System.out.println("");
             return tiposDeTokens[10];
         }
         if (palabra.equals(")")){
-            System.out.print(tiposDeTokens[12]);
-                    System.out.println("");
+
             return tiposDeTokens[12];
         }
         if (palabra.equals("=")){
-            System.out.print(tiposDeTokens[9]);
-            System.out.println("");
             return tiposDeTokens[9];
         }
         if (palabra.equals(";")){
-            System.out.println("");
             return tiposDeTokens[8];
         }
         if (palabra.equals("{")){
-            System.out.print(tiposDeTokens[7]);
-            System.out.println("");
             return tiposDeTokens[7];
         }
         if (palabra.equals("}")){
-            System.out.print(tiposDeTokens[11]);
-            System.out.println("");
             return tiposDeTokens[11];
         }
-        if (palabra.equals("+") || palabra.equals("-") || palabra.equals("*") || palabra.equals("/")){
-            System.out.print(tiposDeTokens[4]);
-            System.out.println("");
+        if (palabra.equals("+") || palabra.equals("-") || palabra.equals("*") || palabra.equals("/")|| palabra.equals("%")){
+
             return tiposDeTokens[4];
         }
         if (palabra.equals("public") || palabra.equals("private")){
-            System.out.print(tiposDeTokens[0]);
-            System.out.println("");
  
             return tiposDeTokens[0];
         }
         if (palabra.equals("int") || palabra.equals("boolean")|| palabra.equals("double")|| palabra.equals("char")|| palabra.equals("byte")|| palabra.equals("float")
                 || palabra.equals("long")|| palabra.equals("short")|| palabra.equals("class")|| palabra.equals("interface")){
-            System.out.print(tiposDeTokens[2]);
-            System.out.println("");
             return tiposDeTokens[2];
         }
         if (palabra.equals("<") || palabra.equals("==") || palabra.equals("!=") || palabra.equals(">") || palabra.equals("<=") || palabra.equals(">=")){
-            System.out.print(tiposDeTokens[3]);
-            System.out.println("");
             return tiposDeTokens[3];
         }
         if (palabra.equals("true") || palabra.equals("false")){
-            System.out.print(tiposDeTokens[5]);
-            System.out.println("");
             return tiposDeTokens[5];
         }
         try {
             Integer.parseInt(palabra);
-            System.out.print(tiposDeTokens[6]);
-            System.out.println("");
             return tiposDeTokens[6];
         } catch (Exception ignored) {
         }
         if (validarExpresion(palabra)){
-            System.out.print(tiposDeTokens[1]);
-            System.out.println("");
             return tiposDeTokens[1];
         }
         
@@ -163,6 +140,7 @@ public class Lexico {
         String t;
         while (palabra.length() != 0) {
             if (palabra.charAt(0) == '(' || palabra.charAt(0) == ')') {
+                
                 MainCompilador.agregarToken(palabra.charAt(0) + "", false, tipoDeToken(palabra.charAt(0) + ""),0,0);
                 if (palabra.length() != 1) {
                     palabra = palabra.substring(1);
