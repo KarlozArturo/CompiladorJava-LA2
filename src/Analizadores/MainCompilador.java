@@ -37,8 +37,6 @@ public class MainCompilador {
 
     public static void agregarToken(String palabra, boolean pres, String tipo,int l,int c) {
         tokens.add(new Token(palabra, pres, tipo,l,c));
-           /* System.out.println("");
-        System.out.println(palabra+" "+pres+" "+tipo+" "+l+" "+c);*/
     }
     
     
@@ -56,11 +54,9 @@ public class MainCompilador {
                 if(tokens.get(i-1).getTipo().equals("type")){
                     if(tokens.get(i+2).getTipo().equals("boolean literal")||tokens.get(i+2).getTipo().equals("integer literal")||tokens.get(i+1).getTipo().equals(";")){
                         if(tokens.get(i+1).getTipo().equals(";")){
-                            //System.out.println(tokens.get(i).getToken()+" "+tokens.get(i-1).getToken()+" "+tokens.get(i-1).getLinea()+" "+ "Empty");
                             s = new Simbolos(tokens.get(i).getToken(), tokens.get(i-1).getToken(),"Empty", tokens.get(i-1).getLinea());
                             tablaSimbolos.add(s);
                         }else{
-                //System.out.print(tokens.get(i).getToken()+" "+tokens.get(i-1).getToken()+" "+tokens.get(i-1).getLinea()+" "+tokens.get(i+2).getToken());
                 compatible=verficiarDeclaracion(tokens.get(i).getToken(), tokens.get(i-1).getToken(), tokens.get(i+2).getToken(), tokens.get(i-1).getLinea());
                 if(compatible){
                 s = new Simbolos(tokens.get(i).getToken(), tokens.get(i-1).getToken(), tokens.get(i+2).getToken(), tokens.get(i-1).getLinea());
@@ -69,14 +65,12 @@ public class MainCompilador {
                         }
                 }
                 }
-                    //System.out.println("");
                }else{
                   //si la variable ya existe en la tablaDeSimbolos
                   if(tokens.get(i-1).getTipo().equals("type")){
                       System.out.println("La variable "+tokens.get(i).getToken()+" enla linea "+tokens.get(i).getLinea()+" se encunentra repetida");
                   }else{
                    compatible = verficiarDeclaracion(tokens.get(i).getToken(), tokens.get(i-1).getToken(), tokens.get(i+2).getToken(), tokens.get(i-1).getLinea());
-                    //System.out.println(compatible);
                   if(compatible){
                       newValue(i, nTablaSimbolos);
                   }
@@ -94,7 +88,6 @@ public class MainCompilador {
         for (int i = 0; i < tablaSimbolos.size(); i++){
             if(tablaSimbolos.get(i).getNombre().equals(nombre)){
                 exists = i;
-                //System.out.println(nombre+" ya existe en la tabla de simbolos");
                 break;
             }
            
@@ -123,13 +116,10 @@ public class MainCompilador {
     public static void newValue(int i, int iSimmbol){
         int n1,n2;
         for (int j = i+1;j <tokens.size(); j++) {
-            //System.out.println(tokens.get(j).getToken());
-            //solo le asignara un nuevo valor a esa variable si tiene un igual a la dereha
             if(tokens.get(j).getTipo().equals("=")){
                 if(tokens.get(j+2).getTipo().equals("aritmetical operator")){
                     String operador = tokens.get(j+2).getToken();
                     String newValue = "";
-                    //ifs por si uno de los valores es una variable vaya a buscar el valor
                     if(tokens.get(j+1).getTipo().equals("identifier")){
                         isInitialize(tokens.get(j+1).getToken(),tokens.get(j+1).getLinea());
                         n1 = Integer.parseInt(getValorVariable(tokens.get(j+1).getToken()));
@@ -143,7 +133,7 @@ public class MainCompilador {
                     }else{
                           n2=Integer.parseInt(tokens.get(j+3).getToken());
                     }
-                    //////
+                    
  
                     switch ( operador){
                         case "+":
@@ -168,7 +158,6 @@ public class MainCompilador {
                             break;
                     }
                 }
-                //else por si no es una operacion aritmetica y solamente es una asignacion
         }
     }
     }

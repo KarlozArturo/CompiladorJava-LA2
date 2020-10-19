@@ -273,7 +273,6 @@ public class Sintactico {
             }
         }
 
-         
         if(tipo1.equals("int")&& tipo2.equals("integer literal")||tipo1.equals("integer literal")&& tipo2.equals("int")||tipo1.equals("int")&& tipo2.equals("int")){
             return true;
         }
