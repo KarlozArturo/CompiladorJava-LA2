@@ -287,7 +287,7 @@ public class Sintactico {
             return true;
         }
          System.out.println("");
-         System.out.println("Tipos de datos no compatibles en la linea " + 4 );
+         System.out.println("Tipos de datos no compatibles en la linea " + getLinea("relational operator") );
         return false;
         }
      
