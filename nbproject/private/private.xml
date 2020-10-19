@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/Sintactico.java</file>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/Lexico.java</file>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/Simbolos.java</file>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/Token.java</file>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/MainCompilador.java</file>
+            <file>file:/home/angelarturo/Downloads/CompiladorJava-LA2/src/Analizadores/TablaSimbolos.java</file>
+        </group>
     </open-files>
 </project-private>

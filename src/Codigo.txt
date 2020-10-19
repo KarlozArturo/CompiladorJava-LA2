@@ -1,9 +1,10 @@
 public class Prueba{
-private int variable;
-private int variable3 = 15 + 1;
-    private boolean verdadero = true;
-private int verdadero = 0;
-	public int x;
-    x = variable3 + variable;
+
+private int expresion=4;
+private int expresion2;
+private boolean verdadero = true;
+public int verdadero = 42;
+public int x;
+x = expresion2 + expresion;
 
 }

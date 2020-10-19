@@ -8,13 +8,15 @@ import java.util.logging.Logger;
 public class Sintactico {
 
     private final ArrayList<String> tiposTokens;
-    private final ArrayList<Token> tokens;
+    private static ArrayList<Token> tokens;
+    private static ArrayList<Simbolos> tablaSimbolos;
     private int contador = 0;
     private boolean bandera;
 
-    public Sintactico(ArrayList<String> tt,ArrayList<Token> ts) {
+    public Sintactico(ArrayList<String> tt,ArrayList<Token> ts,ArrayList<Simbolos>tabs) {
         tiposTokens = tt;
         tokens =ts;
+        tablaSimbolos = tabs;
         analizar();
     }
 
@@ -24,7 +26,9 @@ public class Sintactico {
             System.out.println("El código ha compilado con éxito.");
         }
         else {
+            System.out.println("");
             System.out.println("Compilacion terminada.");
+            System.out.println("");
         }
     }
 
@@ -76,6 +80,7 @@ public class Sintactico {
         } else {
             bandera = false;
         }
+
         return bandera;
     }
 
@@ -125,11 +130,17 @@ public class Sintactico {
     }
 
     public boolean AnalizarTestingExpresion(boolean bandera) {
+        int tipo1 = 0;
+        int tipo2 = 0;
+        int linea = 0;
         if (tiposTokens.get(contador).equals("integer literal") || tiposTokens.get(contador).equals("identifier")) {
+            tipo1 = contador;
             contador++;
             if (tiposTokens.get(contador).equals("relational operator")) {
+                linea = tokens.get(contador).getLinea();
                 contador++;
-                bandera = tiposTokens.get(contador).equals("integer literal") || tiposTokens.get(contador).equals("identifier");
+                tipo2 =contador;
+                bandera = tiposCompatibles(tipo1, tipo2);
             } else {
                 bandera = false;
             }
@@ -236,25 +247,60 @@ public class Sintactico {
         return bandera;
     }
     
-    /* public int getErrorLine(String tipo) {
-       el caso para el modificadores seria la linea donde este la primera palabra, y en los otros casos:
-        para la clase,donde este el modificador, en la linea donde este el modificador
-        para el indentificador, la linea donde este la clase
-        y para el corchete, la linea donde este el identificador: 
-        
-        int count = 0;
-        int linea = 0;
-        switch(tipo){
-                case ";":
-                {
-                    while(tokens.get(count).getTipo()!=";"){
-                    linea = tokens.get(count).getLinea();
+     public static boolean tiposCompatibles(int posicion1,int posicion2){
+        String tipo1 = tokens.get(posicion1).getTipo();
+        String tipo2 = tokens.get(posicion2).getTipo();
 
-            count++;
+        if(tipo1.equals("identifier")){
+            tipo1 = tokens.get(posicion1).getToken();
+            
+            for (int i = 0; i < tablaSimbolos.size(); i++) {
+                if(tablaSimbolos.get(i).getNombre().equals(tipo1)){
+                    tipo1 = tablaSimbolos.get(i).getTipo();
+ 
                 }
+            }
         }
-               
+        
+        if(tipo2.equals("identifier")){
+            tipo2 = tokens.get(posicion2).getToken();
+            
+            for (int i = 0; i < tablaSimbolos.size(); i++) {
+                if(tablaSimbolos.get(i).getNombre().equals(tipo2)){
+                    tipo2 = tablaSimbolos.get(i).getTipo();
+
+                }
+            }
         }
-        return linea;
-    }*/
-}
+
+         
+        if(tipo1.equals("int")&& tipo2.equals("integer literal")||tipo1.equals("integer literal")&& tipo2.equals("int")||tipo1.equals("int")&& tipo2.equals("int")){
+            return true;
+        }
+        if(tipo1.equals("boolean")&& tipo2.equals("boolean literal")||tipo1.equals("boolean literal")&& tipo2.equals("boolean")||tipo1.equals("boolean")&& tipo2.equals("boolean")){
+            return true;
+        }
+        if(tipo1.equals("boolean")&& tipo2.equals("boolean literal")||tipo1.equals("boolean literal")&& tipo2.equals("boolean")){
+            return true;
+            
+        }if(tipo1.equals("boolean literal")&& tipo2.equals("boolean literal")||tipo1.equals("integer literal")&& tipo2.equals("integer literal")){
+            return true;
+        }
+         System.out.println("");
+         System.out.println("Tipos de datos no compatibles en la linea " + 4 );
+        return false;
+        }
+     
+     public static int getLinea(String tipo){
+         int posicion = 0;
+         for (int i = 0; i < tokens.size(); i++) {
+             if(tokens.get(i).getToken().equals("==")){
+                 posicion = tokens.get(i).getLinea();
+             }
+         }
+         return posicion;
+     }
+     
+    }
+    
+

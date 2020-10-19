@@ -2,7 +2,6 @@ package Analizadores;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 
 public class MainCompilador {
 
@@ -10,7 +9,7 @@ public class MainCompilador {
     public static ArrayList<Simbolos> tablaSimbolos = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        LeerArchivos arch = new LeerArchivos("Codigo");
+        LeerArchivos arch = new LeerArchivos("test");
         Lexico analizadorLexico = new Lexico();
         tokens = new ArrayList<>();
         String linea = "";
@@ -21,9 +20,9 @@ public class MainCompilador {
             linea = arch.leerSigLinea();
             analizadorLexico.analizarLinea(linea, l, 0);
         }
-
-        new Sintactico(obtenerTipos(),tokens);
         recorrerTokens();
+        new Sintactico(obtenerTipos(),tokens,tablaSimbolos);
+        
         TablaSimbolos t = new TablaSimbolos(tablaSimbolos);
   
     }
@@ -88,15 +87,7 @@ public class MainCompilador {
             }
         }
     
-    
-    
-    public static void getTablaSimbolos(){
-        System.out.println("");
-        System.out.println("| NOMBRE \t| TIPO \t| VALOR \t| POSICION \t| ");
-        for (int i = 0; i < tablaSimbolos.size(); i++) {
-            System.out.println(tablaSimbolos.get(i).getNombre()+"\t\t"+tablaSimbolos.get(i).getTipo()+" \t"+tablaSimbolos.get(i).getValor()+" \t"+tablaSimbolos.get(i).posicion);
-        }
-    }
+   
     
     public static int encontrarVariable(String nombre){
         int exists=0;
@@ -182,20 +173,7 @@ public class MainCompilador {
     }
     }
     
-    public static boolean tiposCompatibles(String variable1,String variable2){
-        boolean compatibles=false;
-        int pos1 = encontrarVariable(variable1);
-        int pos2 = encontrarVariable(variable2);
-        String tipo1 = tablaSimbolos.get(pos1).getTipo();
-        String tipo2 = tablaSimbolos.get(pos2).getTipo();
-        
-       if(tipo1.equals(tipo2)){
-        compatibles = true;
-           System.out.println("Los tipos de datos no son compatibles");
-    }
-        return compatibles;
-    }
-    
+
     public static String getValorVariable(String nombre){
         String valor = "";
         for (int i = 0; i < tablaSimbolos.size(); i++){
