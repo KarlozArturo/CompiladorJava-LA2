@@ -22,17 +22,15 @@ public class Sintactico {
 
     private void analizar() {
 
-        if (AnalizarClase(bandera)) {
-            System.out.println("El código ha compilado con éxito.");
-        }
-        else {
+        AnalizarClase(bandera);
+
             System.out.println("");
             System.out.println("Compilacion terminada.");
             System.out.println("");
         }
-    }
+    
 
-        public boolean AnalizarClase(boolean bandera) {
+        public void AnalizarClase(boolean bandera) {
         if (tiposTokens.get(contador).equals("modifier"))
             contador++;
         if (tiposTokens.get(contador).equals("type")) {
@@ -56,7 +54,7 @@ public class Sintactico {
         } else {
             bandera = false;
         }
-        return bandera;
+       
     }
 
     public boolean AnalizarFieldDeclaracion(boolean bandera) {
