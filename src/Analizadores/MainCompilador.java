@@ -70,6 +70,8 @@ public class MainCompilador {
                                     s = new Simbolos(tokens.get(i).getToken(), tokens.get(i - 1).getToken(),
                                             tokens.get(i + 2).getToken(), tokens.get(i - 1).getLinea());
                                     tablaSimbolos.add(s);
+                                } else {
+                                    break;
                                 }
                             }
 
@@ -82,10 +84,14 @@ public class MainCompilador {
                                 + tokens.get(i).getLinea() + " se encunentra repetida");
 
                     } else if (tokens.get(i + 1).getToken().equals("=")) {
-                        System.out.println(tokens.get(i + 1).getToken());
-
-                        cuadruplos(getLineOpearacion(i + 1), nTablaSimbolos,
-                                tablaSimbolos.get(nTablaSimbolos).getNombre());
+                        compatible = verficiarDeclaracion(tokens.get(i).getToken(), tokens.get(i - 1).getToken(),
+                                tokens.get(i + 2).getToken(), tokens.get(i - 1).getLinea());
+                        if (compatible) {
+                            cuadruplos(getLineOpearacion(i + 1), nTablaSimbolos,
+                                    tablaSimbolos.get(nTablaSimbolos).getNombre());
+                        } else {
+                            break;
+                        }
                     }
 
                 }
@@ -159,9 +165,7 @@ public class MainCompilador {
     }
 
     public static void cuadruplos(String linea, int posicionTablaSim, String nombreVariable) {
-        // ir llenando el array en base a la linea y no pasarla a char,
-        String[] caracteres = linea.split("");// tenemos que ver como conseguir cada string separado por espacios
-
+        String[] caracteres = linea.split("");
         // los pasamos a un arraylist para manejarlo con mayor facilidad
         ArrayList<Operandos> variables = new ArrayList<>();
         Operandos o;
@@ -217,12 +221,11 @@ public class MainCompilador {
                 }
 
                 for (int i = j + 1; i < variables.size(); i++) {
-                    // Por si encuentra una multiplicacion o division
+
                     if (variables.get(i).getNombre().equals("+") || variables.get(i).getNombre().equals("-")) {
                         if (variables.get(i - 1).getNombre().equals(")")
                                 || variables.get(i + 1).getNombre().equals(")")) {
-                            break; // este if con break es en caso de uno de los operandos sea un parentesis que
-                                   // cierra, indicando que las operaciones dentro del parentsis terminaron
+                            break;
                         }
                         contadorTemporales++;
                         System.out.println(variables.get(i).getNombre() + "\t\t" + variables.get(i - 1).getNombre()
@@ -289,7 +292,7 @@ public class MainCompilador {
                 if (variables.size() == 3) {// es 3 por que cuando hace la ultima operacion siempre son 3 elementos,
                                             // ambos operandos y el operador
                     System.out.println(variables.get(i).getNombre() + "\t\t" + variables.get(i - 1).getNombre() + "\t\t"
-                            + variables.get(i + 1).getNombre() + "\t\t" + nombreVariable);
+                            + variables.get(i + 1).getNombre() + "\t\t" + "Arturo" + contadorTemporales);
                 } else
                     System.out.println(variables.get(i).getNombre() + "\t\t" + variables.get(i - 1).getNombre() + "\t\t"
                             + variables.get(i + 1).getNombre() + "\t\t" + "Arturo" + contadorTemporales);
@@ -319,10 +322,10 @@ public class MainCompilador {
         System.out.println(tablaSimbolos.get(posicionTablaSim).getNombre() + " = " + "Arturo" + contadorTemporales);
     }
 
-    public static String getLineOpearacion(int posicionTokenIgual) {// usaremos el igual como
-                                                                    // punto de
-        // partida hasta llegar al
-        // ; para obtener la cadena de la expresion
+    public static String getLineOpearacion(int posicionTokenIgual) {
+        // usaremos el igual como punto de partida hasta llegar al ; para obtener la
+        // cadena
+        // de la expresion
         String expresion = "";
         int i = posicionTokenIgual + 1;// mas 1 para no incluir el igual
         while (!tokens.get(i).getTipo().equals(";")) {

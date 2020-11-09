@@ -3,7 +3,16 @@ int a = 10;
 int b = 8;
 int c = 4;
 int d = 2;
-int e = 7;
+int e = 1;
+int f = 0;
 
-e = (a + b / c ) * d;
+//Ejemplos vistos en clase
+f = a + b / c * d;
+
+f = a * b / (c + d - e);
+
+f = (a + b - c + d) - e;
+
+//Ejemplo de la imagen
+b = b + 2 + a;
 }
