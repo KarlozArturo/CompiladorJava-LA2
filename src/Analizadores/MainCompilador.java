@@ -42,21 +42,26 @@ public class MainCompilador {
     public static void recorrerTokens() {
         Simbolos s;
         boolean compatible;
+
         for (int i = 0; i < tokens.size(); i++) {
             if (tokens.get(i).getTipo().equals("identifier")) {
+                String identificador = tokens.get(i).getToken();
                 // primero vamos a ver si ya existe previamente la variable en la tabla
 
-                int nTablaSimbolos = encontrarVariable(tokens.get(i).getToken());
+                int nTablaSimbolos = encontrarVariable(identificador);
                 // y si esa variable no se encuentra repetida con un type de dato
                 if (nTablaSimbolos == 0) {
                     if (tokens.get(i - 1).getTipo().equals("type")) {
+
                         if (tokens.get(i + 2).getTipo().equals("boolean literal")
                                 || tokens.get(i + 2).getTipo().equals("integer literal")
                                 || tokens.get(i + 1).getTipo().equals(";")) {
+
                             if (tokens.get(i + 1).getTipo().equals(";")) {
                                 s = new Simbolos(tokens.get(i).getToken(), tokens.get(i - 1).getToken(), "Empty",
                                         tokens.get(i - 1).getLinea());
                                 tablaSimbolos.add(s);
+
                             } else {
                                 compatible = verficiarDeclaracion(tokens.get(i).getToken(),
                                         tokens.get(i - 1).getToken(), tokens.get(i + 2).getToken(),
@@ -67,15 +72,17 @@ public class MainCompilador {
                                     tablaSimbolos.add(s);
                                 }
                             }
+
                         }
                     }
                 } else {
                     // si la variable ya existe en la tablaDeSimbolos
-
                     if (tokens.get(i - 1).getTipo().equals("type")) {
                         System.out.println("La variable " + tokens.get(i).getToken() + " en la linea "
                                 + tokens.get(i).getLinea() + " se encunentra repetida");
-                    } else {
+
+                    } else if (tokens.get(i + 1).getToken().equals("=")) {
+                        System.out.println(tokens.get(i + 1).getToken());
 
                         cuadruplos(getLineOpearacion(i + 1), nTablaSimbolos,
                                 tablaSimbolos.get(nTablaSimbolos).getNombre());
@@ -97,73 +104,6 @@ public class MainCompilador {
         }
 
         return exists;
-    }
-
-    public static boolean variableRepetida(String nombre, int posicion) {
-        boolean exists = false;
-        System.out.println(nombre);
-        for (int i = 0; i < tablaSimbolos.size(); i++) {
-            if (tablaSimbolos.get(i).getNombre().equals(nombre)) {
-                System.out.println(tablaSimbolos.get(i).getNombre());
-                if ("Type".equals(tokens.get(i - 1).getTipo())) {
-                    System.out.println(tokens.get(i - 1).getTipo());
-                    exists = true;
-                    System.out.println(
-                            "Variable " + nombre + " en la linea " + posicion + " no se encuentra inicializada");
-                    System.exit(0);
-                }
-            }
-
-        }
-        return exists;
-    }
-
-    public static void newValue(int i, int iSimmbol) {
-        int n1, n2;
-        for (int j = i + 1; j < tokens.size(); j++) {
-            if (tokens.get(j).getTipo().equals("=")) {
-                if (tokens.get(j + 2).getTipo().equals("aritmetical operator")) {
-                    String operador = tokens.get(j + 2).getToken();
-                    String newValue = "";
-                    if (tokens.get(j + 1).getTipo().equals("identifier")) {
-                        isInitialize(tokens.get(j + 1).getToken(), tokens.get(j + 1).getLinea());
-                        n1 = Integer.parseInt(getValorVariable(tokens.get(j + 1).getToken()));
-
-                    } else {
-                        n1 = Integer.parseInt(tokens.get(j + 1).getToken());
-                    }
-                    if (tokens.get(j + 3).getTipo().equals("identifier")) {
-                        isInitialize(tokens.get(j + 3).getToken(), tokens.get(j + 3).getLinea());
-                        n2 = Integer.parseInt(getValorVariable(tokens.get(j + 3).getToken()));
-                    } else {
-                        n2 = Integer.parseInt(tokens.get(j + 3).getToken());
-                    }
-
-                    switch (operador) {
-                        case "+":
-                            newValue = String.valueOf(n1 + n2);
-                            tablaSimbolos.get(iSimmbol).setValor(newValue);
-                            break;
-                        case "-":
-                            newValue = String.valueOf(n1 - n2);
-                            tablaSimbolos.get(iSimmbol).setValor(newValue);
-                            break;
-                        case "/":
-                            newValue = String.valueOf(n1 / n2);
-                            tablaSimbolos.get(iSimmbol).setValor(newValue);
-                            break;
-                        case "*":
-                            newValue = String.valueOf(n1 * n2);
-                            tablaSimbolos.get(iSimmbol).setValor(newValue);
-                            break;
-                        case "%":
-                            newValue = String.valueOf(n1 % n2);
-                            tablaSimbolos.get(iSimmbol).setValor(newValue);
-                            break;
-                    }
-                }
-            }
-        }
     }
 
     public static String getValorVariable(String nombre) {
@@ -219,21 +159,103 @@ public class MainCompilador {
     }
 
     public static void cuadruplos(String linea, int posicionTablaSim, String nombreVariable) {
+        // ir llenando el array en base a la linea y no pasarla a char,
+        String[] caracteres = linea.split("");// tenemos que ver como conseguir cada string separado por espacios
 
-        char[] caracteres = linea.toCharArray();
         // los pasamos a un arraylist para manejarlo con mayor facilidad
         ArrayList<Operandos> variables = new ArrayList<>();
         Operandos o;
-        for (char c : caracteres) {
-            o = new Operandos(String.valueOf(c), String.valueOf(c));
+        for (String c : caracteres) {
+            // si hay variables en los operandos, buscamos su valor en la tabla de simbolos
+            String valor = getValorVariable(c);
+            if (valor.equals("")) {
+                valor = c;
+            }
+            o = new Operandos(c, valor);
             variables.add(o);
+
         }
+
         int contadorTemporales = 0;
         int arturoTemporal = 0;
         // recorrer el array para encontrar los operadores con mayor prioridad
+        System.out.println();
         System.out.println("Operador" + "\t" + "Operando1" + "\t" + "Operando2" + "\t" + "Resultado" + "\t");
-        // recorre la expresion para realizar las multiplicaciones y y divisiones
-        // primero
+        // primero busca los parentesis
+        for (int j = 0; j < variables.size(); j++) {
+            if (variables.get(j).getNombre().equals("(")) {
+
+                // ahora va a recorrer lo que esta dentro del parentesis
+                for (int i = j + 1; i < variables.size(); i++) {
+                    // Por si encuentra una multiplicacion o division
+                    if (variables.get(i).getNombre().equals("*") || variables.get(i).getNombre().equals("/")) {
+                        if (variables.get(i - 1).getNombre().equals(")")
+                                || variables.get(i + 1).getNombre().equals(")")) {
+                            break; // este if con break es en caso de uno de los operandos sea un parentesis que
+                                   // cierra, indicando que las operaciones dentro del parentsis terminaron
+                        }
+                        contadorTemporales++;
+                        System.out.println(variables.get(i).getNombre() + "\t\t" + variables.get(i - 1).getNombre()
+                                + "\t\t" + variables.get(i + 1).getNombre() + "\t\t" + "Arturo" + contadorTemporales);
+
+                        if (variables.get(i).getNombre().equals("*")) {
+                            arturoTemporal = Integer.parseInt(variables.get(i - 1).getValor())
+                                    * Integer.parseInt(variables.get(i + 1).getValor());
+                        } else {
+                            arturoTemporal = Integer.parseInt(variables.get(i - 1).getValor())
+                                    / Integer.parseInt(variables.get(i + 1).getValor());
+                        }
+                        String temporal = Integer.toString(arturoTemporal);
+                        variables.get(i + 1).setValor(temporal);
+                        variables.get(i + 1).setNombre("Arturo" + contadorTemporales);
+                        variables.remove(i);
+                        variables.remove(i - 1);
+                        i = j;
+
+                    }
+
+                }
+
+                for (int i = j + 1; i < variables.size(); i++) {
+                    // Por si encuentra una multiplicacion o division
+                    if (variables.get(i).getNombre().equals("+") || variables.get(i).getNombre().equals("-")) {
+                        if (variables.get(i - 1).getNombre().equals(")")
+                                || variables.get(i + 1).getNombre().equals(")")) {
+                            break; // este if con break es en caso de uno de los operandos sea un parentesis que
+                                   // cierra, indicando que las operaciones dentro del parentsis terminaron
+                        }
+                        contadorTemporales++;
+                        System.out.println(variables.get(i).getNombre() + "\t\t" + variables.get(i - 1).getNombre()
+                                + "\t\t" + variables.get(i + 1).getNombre() + "\t\t" + "Arturo" + contadorTemporales);
+
+                        if (variables.get(i).getNombre().equals("+")) {
+                            arturoTemporal = Integer.parseInt(variables.get(i - 1).getValor())
+                                    + Integer.parseInt(variables.get(i + 1).getValor());
+                        } else {
+                            arturoTemporal = Integer.parseInt(variables.get(i - 1).getValor())
+                                    - Integer.parseInt(variables.get(i + 1).getValor());
+                        }
+                        String temporal = Integer.toString(arturoTemporal);
+                        variables.get(i + 1).setValor(temporal);
+                        variables.get(i + 1).setNombre("Arturo" + contadorTemporales);
+                        variables.remove(i);
+                        variables.remove(i - 1);
+                        i = j;
+
+                    }
+
+                }
+
+            }
+        }
+
+        for (int i = 0; i < variables.size(); i++) {
+            if (variables.get(i).getNombre().equals("(") || variables.get(i).getNombre().equals(")")) {
+                variables.remove(i);
+            }
+        }
+
+        // para todo lo que este fuera de parentesis
         for (int i = 0; i < variables.size(); i++) {
             if (variables.get(i).getNombre().equals("*") || variables.get(i).getNombre().equals("/")) {
                 contadorTemporales++;
@@ -293,7 +315,8 @@ public class MainCompilador {
 
         }
         tablaSimbolos.get(posicionTablaSim).setValor(Integer.toString(arturoTemporal));
-        System.out.println("Operacion = " + arturoTemporal);
+        System.out.println("Arturo" + contadorTemporales + " = " + arturoTemporal);
+        System.out.println(tablaSimbolos.get(posicionTablaSim).getNombre() + " = " + "Arturo" + contadorTemporales);
     }
 
     public static String getLineOpearacion(int posicionTokenIgual) {// usaremos el igual como

@@ -1,5 +1,9 @@
 public class Prueba{
-int d = 13;
-int algo = 4;
-algo = 1 + 2 * 6 / 4;
+int a = 10;
+int b = 8;
+int c = 4;
+int d = 2;
+int e = 7;
+
+e = (a + b / c ) * d;
 }
